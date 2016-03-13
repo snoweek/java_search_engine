@@ -26,7 +26,7 @@ public class Lucene {
 			while(rs.next()){
 				
 				System.out.println(rs.getString("title"));
-				File indexDir = new File("/home/sunyan/code/eclipse_java/lucene_result");
+				File indexDir = new File("/home/sunyan/code/eclipse/lucene_result");
 				Directory fsDirectory = FSDirectory.open(indexDir);
 				Document doc = new Document();				   
 				TextField title= new TextField("title", rs.getString("title"), Store.YES);
