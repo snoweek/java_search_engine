@@ -48,6 +48,7 @@ IndexWriter indexWriter = new IndexWriter(ramDirectory, iwConfig);
 indexWrtier indexWriter  =   new  IndexWriter( new  RAMDirectory(), iwConfig);
 ```
 该方式创建的索引数据保存在内存中，会因为程序的退出而消失。
+
 2. 添加数据
 ```
 Document doc = new Document();
@@ -57,6 +58,7 @@ doc.add(id);
 doc.add(title);
 ```
 创建索引库中的一条数据doc，并往数据中中添加属性id和title
+
 3. 实例化分词器对象
 ```
 Analyzer analyzer = new IKAnalyzer()
@@ -64,15 +66,18 @@ Analyzer analyzer = new IKAnalyzer()
 在创建索引时会用到分词器，在使用字符串搜索时也会用到分词器。这两个地方要使用同一个分词器，否则可能会搜索不出结果。
 分词器的一般工作流程：切分关键词、去除停用词、对于英文单词，把所有字母转为小写（搜索时不区分大小写）。
 停用词有些词在文本中出现的频率非常高，但是对文本所携带的信息基本不产生影响，例如英文的“a、an、the、of”，或中文的“的、了、着”，以及各 种标点符号等，这样的词称为停用词（stop word）。文本经过分词之后，停用词通常被过滤掉，不会被进行索引。在检索的时候，用户的查询中如果含有停用词，检索系统也会将其过滤掉（因为用户输入的查询字符串也要进行分词处理）。排除停用词可以加快建立索引的速度，减小索引库文件的大小。
+
 4. 初始配置
 ```
 IndexWriterConfig iwConfig = new IndexWriterConfig(Version.LUCENE_4_10_1, analyzer);
 ```
 IndexWriterConfig对象用来设置IndexWriter一些初始配置，一旦IndexWriter对象创建完成，改变IndexWriterConfig的配置对已创建的IndexWriter对象不会产生影响。
+
 5. 设置索引维护的方式
 ```
 iwConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
 ```
+
 6.创建索引
 ```
 IndexWriter indexWriter = new IndexWriter(fsDirectory, iwConfig);
@@ -98,6 +103,7 @@ Query query  =  QueryParser.parser(“要查询的字串”)
 ```
 先 使用QueryParser查询分析器构造Query对象
 QueryParser查询分析器，处理用户输入的查询字符串，把用户输入的非格式化检索词转化成后台检索可以理解的Query对象调用parser进行语法分析，形成查询语法树。查询字符串也要先经过Analyzer（分词器）。要求搜索时使用的Analyzer要与建立索引时使用的 Analzyer要一致，否则可能搜不出正确的结果。
+
 2. 获取搜索结果
 ```
 TopDocs topDocs = isearcher.search(query , 5); 
