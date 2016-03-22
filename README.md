@@ -1,6 +1,8 @@
+
 # search_engine
+
 search_engine,是一个基于java和mysql的新闻搜索工具，爬虫模块使用了jsoup库，搜索模块使用了Lucene。
-##数据库search表信息
+## 数据库search表信息
 如果数据连接信息，例如数据库名或密码发生变化，可以到src/Spider/UseMysql.java中修改。
 * geturl
 ```
@@ -23,12 +25,12 @@ CREATE TABLE `artical` (
 ```
 表artical包含四列，artical_id用于记录文章获取的顺序，同时用作主键;title用于记录文章标题;content用于记录文章的具体内容;url_id用于指示文章所属的链接。
 
-##网络爬虫
+## 网络爬虫
 网络爬虫，是一种按照一定的规则，自动地抓取万维网信息的程序或者脚本.在此使用了jsoup库。jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。
 ##搜索模块
 搜索模块使用了Lucene。Lucene是一个全文检索的框架，其全文检索的功能可以非常方便的实现根据关键字来搜索整个应用系统的内容。
 Lucene的操作方式和操作数据库有点相似，所以如果要使用Lucene，就要先创建“数据库”，然后往这个“数据表”中一行一行的插入数据，数据插入成功之后，就可以操作这张“数据表”，实现增删改查操作了。
-###索引过程中用到的类
+### 索引过程中用到的类
 1. FSDirectory:创建了磁盘目录对象fsdDirectory,该方式创建的索引数据保存在磁盘上，不会因为程序的退出而消失。
 ```
 File indexDir = new File("/home/sunyan/code/eclipse/lucene_result");
@@ -38,23 +40,23 @@ Lucene提供了两种索引库的创建方式,FSDirectory和RAMDirectory两个�
 ```
 Directory ramDirectory=New RAMDirectory()
 ```
-2. TestField:文档对象的字段
+
+2. TextField:文档对象的字段
 ```
 TextField(String name, String value, Store store)  
 ```
 name  : 字段名称  
 value : 字段的值 
-store : 1. Field.Store.YES:存储字段值（未分词前的字段值） 
-
-        2. Field.Store.NO:不存储,存储与索引没有关系
-
-        3. Field.Store.COMPRESS:压缩存储,用于长文本或二进制，但性能受损 
+store :   *Field.Store.YES:存储字段值（未分词前的字段值） 
+          *Field.Store.NO:不存储,存储与索引没有关系
+          *Field.Store.COMPRESS:压缩存储,用于长文本或二进制，但性能受损 
 
 ```
 TextField title= new TextField("title", rs.getString("title"), Store.YES);
 TextField content= new TextField("content", rs.getString("content"), Store.YES);
 TextField url= new TextField("url_id", rs.getString("url_id"), Store.YES);
 ```
+
 3. Document:文档对象，对象中可以有字段,往里面添加内容之后可以根据字段去匹配查询。 
 ```
 Document doc = new Document();
@@ -62,6 +64,7 @@ doc.add(title);
 doc.add(content);
 doc.add(url);
 ```
+
 4. Analyzer:文本文件在被索引之前，需要经过Analyzer处理。常用的中文分词器有庖丁、IKAnalyzer。
 ```
 Analyzer analyzer = new IKAnalyzer();
@@ -69,6 +72,7 @@ Analyzer analyzer = new IKAnalyzer();
 实例化一个分词器对象，在创建索引时会用到分词器，在使用字符串搜索时也会用到分词器，这两个地方要使用同一个分词器，否则可能会搜索不出结果。
 分词器的一般工作流程：切分关键词、去除停用词、对于英文单词，把所有字母转为小写（搜索时不区分大小写）。
 停用词有些词在文本中出现的频率非常高，但是对文本所携带的信息基本不产生影响，例如英文的“a、an、the、of”，或中文的“的、了、着”，以及各 种标点符号等，这样的词称为停用词（stop word）。文本经过分词之后，停用词通常被过滤掉，不会被进行索引。在检索的时候，用户的查询中如果含有停用词，检索系统也会将其过滤掉（因为用户输入 的查询字符串也要进行分词处理）。排除停用词可以加快建立索引的速度，减小索引库文件的大小。
+
 5. IndexWriter:索引写入器,用于创建一个新的索引并把文档加到已有的索引中去，也可以向索引中添加、删除和更新被索引文档的信息。
 ```
 IndexWriter indexWriter = new IndexWriter(fsDirectory, iwConfig);//创建索引写入器indexWriter，
@@ -85,7 +89,8 @@ indexWriter.addDocument(doc);//利用索引写入器将指定的数据存入内�
 indexWriter.close();//关闭IndexWriter 写入器   
 ```
 indexWriter调用函数addDocument将索引写到索引文件夹（索引库）中,并自动指定一个内部编号，用来唯一标识这条数据。
-###搜索过程中用到的类
+### 搜索过程中用到的类
+
 1. IndexSearcher：IndexWriter创建的索引进行搜索。
 ```
 Directory fsDirectory = FSDirectory.open(indexDir);
@@ -105,7 +110,6 @@ qp.setDefaultOperator(QueryParser.AND_OPERATOR);
 Query query = qp.parse("习近平");  
 ```
 查询分析器，处理用户输入的查询字符串，把用户输入的非格式化检索词转化成后台检索可以理解的Query对象调用parser进行语法分析，形成查询语法树。查询字符串也要先经过Analyzer（分词器）。要求搜索时使用的Analyzer要与建立索引时使用的 Analzyer要一致，否则可能搜不出正确的结果
-
 
 3. TopDocs:是一个简单的指针容器，指针一般指向前N个排名的搜索结果，搜索结果即匹配查询条件的文档。
 ```
@@ -128,7 +132,7 @@ IndexSearcher调用search对查询语法树Query进行搜索，得到结果。�
 内容:Document<stored,indexed,tokenized<id:182> stored,indexed,tokenized<title:昆明航空多名空姐被恶搞塞进行李架(图)> stored,indexed,tokenized<url:http://news.163.com/15/1011/22/B5M981CT00011229.html#f=www>>
 ```
 
-##License
+## License
 Apache 
 
 
