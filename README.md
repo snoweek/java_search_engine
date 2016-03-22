@@ -91,6 +91,7 @@ DirectoryReader ireader = DirectoryReader.open(fsDirectory);
 IndexSearcher isearcher = new IndexSearcher(ireader);
 ```
 创建IndexSearcher 检索索引的对象，里面要传递上面写入的内存目录对象directory。
+
 2. QueryParser：查询分析器 
 ```
 QueryParser qp = new QueryParser(Field字段，分词器) 
