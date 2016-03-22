@@ -40,23 +40,21 @@ Lucene提供了两种索引库的创建方式,FSDirectory和RAMDirectory两个�
 ```
 Directory ramDirectory=New RAMDirectory()
 ```
-
 2. TextField:文档对象的字段
 ```
 TextField(String name, String value, Store store)  
 ```
 name  : 字段名称  
 value : 字段的值 
-store :   *Field.Store.YES:存储字段值（未分词前的字段值） 
-          *Field.Store.NO:不存储,存储与索引没有关系
-          *Field.Store.COMPRESS:压缩存储,用于长文本或二进制，但性能受损 
+store :  * Field.Store.YES:存储字段值（未分词前的字段值） 
+          * Field.Store.NO:不存储,存储与索引没有关系
+          * Field.Store.COMPRESS:压缩存储,用于长文本或二进制，但性能受损 
 
 ```
 TextField title= new TextField("title", rs.getString("title"), Store.YES);
 TextField content= new TextField("content", rs.getString("content"), Store.YES);
 TextField url= new TextField("url_id", rs.getString("url_id"), Store.YES);
 ```
-
 3. Document:文档对象，对象中可以有字段,往里面添加内容之后可以根据字段去匹配查询。 
 ```
 Document doc = new Document();
@@ -89,8 +87,8 @@ indexWriter.addDocument(doc);//利用索引写入器将指定的数据存入内�
 indexWriter.close();//关闭IndexWriter 写入器   
 ```
 indexWriter调用函数addDocument将索引写到索引文件夹（索引库）中,并自动指定一个内部编号，用来唯一标识这条数据。
-### 搜索过程中用到的类
 
+### 搜索过程中用到的类
 1. IndexSearcher：IndexWriter创建的索引进行搜索。
 ```
 Directory fsDirectory = FSDirectory.open(indexDir);
