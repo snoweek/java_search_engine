@@ -45,9 +45,9 @@ Directory ramDirectory=New RAMDirectory()
 TextField(String name, String value, Store store)  
 ```
 name  : 字段名称  
-value : 字段的值  
-
-store : 1.Field.Store.YES:存储字段值（未分词前的字段值） 
+value : 字段的值    
+store : 
+        1.Field.Store.YES:存储字段值（未分词前的字段值） 
           
         2.Field.Store.NO:不存储,存储与索引没有关系
 
