@@ -37,27 +37,30 @@ Directory fsDirectory = FSDirectory.open(indexDir);
 Lucene提供了两种索引库的创建方式,FSDirectory和RAMDirectory两个类。RAMDirectory方式创建的索引数据保存在内存中，会因为程序的退出而消失。
 ```
 Directory ramDirectory=New RAMDirectory()
-2.TestField:文档对象的字段
+```
+2. TestField:文档对象的字段
 ```
 TextField(String name, String value, Store store)  
 ```
-name : 字段名称  
+name  : 字段名称  
 value : 字段的值 
-store : Field.Store.YES:存储字段值（未分词前的字段值） ，Field.Store.NO:不存储,存储与索引没有关系，Field.Store.COMPRESS:压缩存储,用于长文本或二进制，但性能受损 
+store : 1. Field.Store.YES:存储字段值（未分词前的字段值） 
+        2. Field.Store.NO:不存储,存储与索引没有关系，
+        3. Field.Store.COMPRESS:压缩存储,用于长文本或二进制，但性能受损 
 
 ```
 TextField title= new TextField("title", rs.getString("title"), Store.YES);
 TextField content= new TextField("content", rs.getString("content"), Store.YES);
 TextField url= new TextField("url_id", rs.getString("url_id"), Store.YES);
 ```
-3. Document:文档对象，对象中可以有字段,往里面添加内容之后可以根据字段去匹配查询 
+3. Document:文档对象，对象中可以有字段,往里面添加内容之后可以根据字段去匹配查询。 
 ```
 Document doc = new Document();
 doc.add(title);
 doc.add(content);
 doc.add(url);
 ```
-4. Analyzer:文本文件在被索引之前，需要经过Analyzer处理。常用的中文分词器有庖丁、IKAnalyzer.
+4. Analyzer:文本文件在被索引之前，需要经过Analyzer处理。常用的中文分词器有庖丁、IKAnalyzer。
 ```
 Analyzer analyzer = new IKAnalyzer();
 ```
