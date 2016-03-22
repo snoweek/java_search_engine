@@ -45,10 +45,9 @@ Directory ramDirectory=New RAMDirectory()
 TextField(String name, String value, Store store)  
 ```
 name  : 字段名称  
-value : 字段的值 
-store : 
+value : 字段的值  
 
-        1.Field.Store.YES:存储字段值（未分词前的字段值） 
+store : 1.Field.Store.YES:存储字段值（未分词前的字段值） 
           
         2.Field.Store.NO:不存储,存储与索引没有关系
 
@@ -75,7 +74,9 @@ Analyzer analyzer = new IKAnalyzer();
 分词器的一般工作流程：切分关键词、去除停用词、对于英文单词，把所有字母转为小写（搜索时不区分大小写）。
 停用词有些词在文本中出现的频率非常高，但是对文本所携带的信息基本不产生影响，例如英文的“a、an、the、of”，或中文的“的、了、着”，以及各 种标点符号等，这样的词称为停用词（stop word）。文本经过分词之后，停用词通常被过滤掉，不会被进行索引。在检索的时候，用户的查询中如果含有停用词，检索系统也会将其过滤掉（因为用户输入 的查询字符串也要进行分词处理）。排除停用词可以加快建立索引的速度，减小索引库文件的大小。
 
-###### 5.IndexWriter:索引写入器,用于创建一个新的索引并把文档加到已有的索引中去，也可以向索引中添加、删除和更新被索引文档的信息。
+###### 5.IndexWriter:索引写入器。
+
+用于创建一个新的索引并把文档加到已有的索引中去，也可以向索引中添加、删除和更新被索引文档的信息。
 ```
 IndexWriter indexWriter = new IndexWriter(fsDirectory, iwConfig);//创建索引写入器indexWriter，
 ```
