@@ -44,10 +44,12 @@ TextField(String name, String value, Store store)
 ```
 name  : 字段名称  
 value : 字段的值 
-store : 
-          1.  Field.Store.YES:存储字段值（未分词前的字段值）  
-          2.  Field.Store.NO:不存储,存储与索引没有关系，
-          3.  Field.Store.COMPRESS:压缩存储,用于长文本或二进制，但性能受损 
+store : 1. Field.Store.YES:存储字段值（未分词前的字段值） 
+
+        2. Field.Store.NO:不存储,存储与索引没有关系
+
+        3. Field.Store.COMPRESS:压缩存储,用于长文本或二进制，但性能受损 
+
 ```
 TextField title= new TextField("title", rs.getString("title"), Store.YES);
 TextField content= new TextField("content", rs.getString("content"), Store.YES);
@@ -77,20 +79,22 @@ IndexWriterConfig iwConfig = new IndexWriterConfig(Version.LUCENE_4_10_1, analyz
 iwConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);//设置索引维护的方式
 ```
 一旦IndexWriter对象创建完成，改变IndexWriterConfig的配置对已创建的IndexWriter对象不会产生影响。
+
 ```
 indexWriter.addDocument(doc);//利用索引写入器将指定的数据存入内存目录对象中
 indexWriter.close();//关闭IndexWriter 写入器   
 ```
 indexWriter调用函数addDocument将索引写到索引文件夹（索引库）中,并自动指定一个内部编号，用来唯一标识这条数据。
 ###搜索过程中用到的类
-1.IndexSearcher：IndexWriter创建的索引进行搜索。
+1. IndexSearcher：IndexWriter创建的索引进行搜索。
 ```
 Directory fsDirectory = FSDirectory.open(indexDir);
 DirectoryReader ireader = DirectoryReader.open(fsDirectory);
 IndexSearcher isearcher = new IndexSearcher(ireader);
 ```
-创建IndexSearcher检索索引的对象，里面要传递上面写入的内存目录对象directory。
-2.QueryParser：查询分析器 
+创建IndexSearcher 检索索引的对象，里面要传递上面写入的内存目录对象directory。
+
+2. QueryParser：查询分析器 
 ```
 QueryParser qp = new QueryParser(Field字段，分词器) 
 Query query  =  qb.parser(“要查询的字串”)
@@ -101,7 +105,9 @@ qp.setDefaultOperator(QueryParser.AND_OPERATOR);
 Query query = qp.parse("习近平");  
 ```
 查询分析器，处理用户输入的查询字符串，把用户输入的非格式化检索词转化成后台检索可以理解的Query对象调用parser进行语法分析，形成查询语法树。查询字符串也要先经过Analyzer（分词器）。要求搜索时使用的Analyzer要与建立索引时使用的 Analzyer要一致，否则可能搜不出正确的结果
-3.TopDocs:是一个简单的指针容器，指针一般指向前N个排名的搜索结果，搜索结果即匹配查询条件的文档。
+
+
+3. TopDocs:是一个简单的指针容器，指针一般指向前N个排名的搜索结果，搜索结果即匹配查询条件的文档。
 ```
 TopDocs topDocs = isearcher.search(query , 5);
 System.out.println("记录条数:" + topDocs.totalHits);
@@ -115,9 +121,12 @@ for (int i = 0; i < topDocs.totalHits; i++){
 }
 ```
 IndexSearcher调用search对查询语法树Query进行搜索，得到结果。此方法返回值为TopDocs，是包含结果的多个信息的一个对象。其中有 totalHits 代表决记录数，ScoreDoc的数组。ScoreDoc是代表一个结果的相关度得分与文档编号等信息的对象。取出要用到的数据列表。调用IndexSearcher.doc(scoreDoc.doc)以取出指定编号对应的Document数据。在分页时要用到：一次只取一页的数据。
+应的Document数据。在分页时要用到：一次只取一页的数据。
+
 ```
 命中:1
 内容:Document<stored,indexed,tokenized<id:182> stored,indexed,tokenized<title:昆明航空多名空姐被恶搞塞进行李架(图)> stored,indexed,tokenized<url:http://news.163.com/15/1011/22/B5M981CT00011229.html#f=www>>
+```
 
 ##License
 Apache 
