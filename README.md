@@ -1,7 +1,7 @@
 
 # search_engine
 
-search_engine,是一个基于java和mysql的新闻搜索工具，爬虫模块使用了jsoup库，搜索模块使用了Lucene。
+search_engine,是一个基于java和mysql的网易新闻搜索工具，爬虫模块使用了jsoup库，搜索模块使用了Lucene。
 ## 数据库search表信息
 如果数据连接信息，例如数据库名或密码发生变化，可以到src/Spider/UseMysql.java中修改。
 * geturl
