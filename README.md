@@ -10,7 +10,7 @@ CREATE TABLE `geturl` (
   `url_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `url` text,
   PRIMARY KEY (`url_id`)
-) 
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 
 ```
 表geturl包含两列，url_id用于记录链接爬取的顺序，同时用作主键;url用于记录链接的具体内容。
 * artical
@@ -21,7 +21,7 @@ CREATE TABLE `artical` (
   `content` text,
   `url_id` mediumint(8) unsigned DEFAULT NULL,
   PRIMARY KEY (`artical_id`)
-)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 
 ```
 表artical包含四列，artical_id用于记录文章获取的顺序，同时用作主键;title用于记录文章标题;content用于记录文章的具体内容;url_id用于指示文章所属的链接。
 
