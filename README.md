@@ -136,6 +136,19 @@ IndexSearcher调用search对查询语法树Query进行搜索，得到结果。�
 内容:Document<stored,indexed,tokenized<id:182> stored,indexed,tokenized<title:昆明航空多名空姐被恶搞塞进行李架(图)> stored,indexed,tokenized<url:http://news.163.com/15/1011/22/B5M981CT00011229.html#f=www>>
 ```
 
+### 问题与解决办法
+#####Access Denied
+由于大量且频繁的爬取数据，爬虫被拒绝了，无法再爬取数据。我的解决办法是伪装user agent。
+User agent是HTTP协议的中的一个字段， 其作用是描述发出HTTP请求的客户端的一些信息。服务器通过这个字段就可以知道要访问网站的是什么人了。每个浏览器，每个正规的爬虫都有其固定的user agent，因此只要将这个字段改为这些知名的user agent，就可以成功伪装了。不过，不推荐伪装知名爬虫，因为这些爬虫很可能有固定的IP，如百度爬虫。与此相对的，伪装浏览器的user agent是一个不错的主意，因为浏览器是任何人都可以用的，换名话说，就是没有固定IP。
+```
+Connection conWeb = Jsoup.connect(Config.URL_PATH);
+conWeb.header("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; MALC)");
+```
+#####Lucene特殊字符处理
+若遇到类似错误Cannot parse '{{{': Encountered "<EOF>"，说明
+查询语句中含有Lucene保留的关键字或者语料库中当前被分析的文本是空文本。
+需要用QueryParser的静态方法escape(string s)进行处理。
+
 ## License
 Apache 
 
