@@ -17,6 +17,8 @@ public class GetArtical {
 			while (rs.next()) {
 				org.jsoup.Connection conWeb = Jsoup.connect(rs.getString("url"));
 				conWeb.header("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; MALC)");
+				conWeb.header("X-Forward-For", "123.12.134.12");
+				conWeb.header("X-Real-IP", "123.12.134.12");
 				Document doc = conWeb.get();
 				Elements head = doc.select("h1");
 				Elements pageContent = doc.select("p");

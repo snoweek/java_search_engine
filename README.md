@@ -139,11 +139,23 @@ IndexSearcher调用search对查询语法树Query进行搜索，得到结果。�
 ### 问题与解决办法
 ##### 1. Access Denied
 由于大量且频繁的爬取数据，爬虫被拒绝了，无法再爬取数据。我的解决办法是伪装user agent。
-User agent是HTTP协议的中的一个字段， 其作用是描述发出HTTP请求的客户端的一些信息。服务器通过这个字段就可以知道要访问网站的是什么人了。每个浏览器，每个正规的爬虫都有其固定的user agent，因此只要将这个字段改为这些知名的user agent，就可以成功伪装了。不过，不推荐伪装知名爬虫，因为这些爬虫很可能有固定的IP，如百度爬虫。与此相对的，伪装浏览器的user agent是一个不错的主意，因为浏览器是任何人都可以用的，换名话说，就是没有固定IP。
+User agent是HTTP协议的中的一个字段， 其作用是描述发出HTTP请求的客户端的一些信息。服务器通过这个字段就可以知道要访问网站的是什么人了。每个浏览器，每个正规的爬虫都有其固定的user agent，因此只要将这个字段改为这些知名的user agent，就可以成功伪装了。不过，不推荐伪装知名爬虫，因为这些爬虫很可能有固定的IP，如百度爬虫。与此相对的，伪装浏览器的user agent是一个不错的主意，因为浏览器是任何人都可以用的。
 ```
 Connection conWeb = Jsoup.connect(Config.URL_PATH);
 conWeb.header("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; MALC)");
 ```
+也可以伪造IP
+```
+conWeb.header("X-Forward-For", "123.12.134.12");
+conWeb.header("X-Real-IP", "123.12.134.12");
+```
+最好伪造的IP是动态的。每次http请求都设置成不一样，效果更好。
+对于如何动态伪造IP,有以下两种思路：
+1、准备一些ip放在一个数据结构里，每次请求选一个
+2、写个函数，用随机数组成IP
+
+由于服务器可能同时监测IP和浏览器头,所以可以两种方式同时实现。
+
 ##### 2. Lucene特殊字符处理
 若遇到类似错误Cannot parse '{{{': Encountered "<EOF>"，说明
 查询语句中含有Lucene保留的关键字或者语料库中当前被分析的文本是空文本。

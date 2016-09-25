@@ -13,6 +13,8 @@ public class GetURL {
 		try {
 			org.jsoup.Connection conWeb = Jsoup.connect(Config.URL_PATH);
 			conWeb.header("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; MALC)");
+			conWeb.header("X-Forward-For", "123.12.134.12");
+			conWeb.header("X-Real-IP", "123.12.134.12");
 			Document doc = conWeb.get();
 			// Elements link=doc.select("a[href^=http://news.163.com/16]");
 			Elements link = doc.select("a[href^=http://news.163.com]");
